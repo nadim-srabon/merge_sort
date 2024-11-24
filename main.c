@@ -1,79 +1,75 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
-{
+void divide_merge(int arr[], int low, int high, int mid);
+void merge(int arr[], int low, int high);
 
+int main() {
+    int arr[] = {2, 4, 6, 3, 8, 9};
+    int n = sizeof(arr) / sizeof(arr[0]);
 
-   int arr = {2, 4, 6, 3, 8, 9};
+    merge(arr, 0, n - 1);
 
-   int n = sizeof(arr)/sizeof(arr[0]);
-
-   int low = 0;
-   int high = n - 1;
-
-   int mid = (low+high)/2;
-
-   merge(arr,low,high);
+    printf("Sorted array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
 
     return 0;
 }
 
-
-void divide_merge(int arr[], int low, int high, int mid){
-
-
-    //Divide Part
-
-
+// Function to divide and merge
+void divide_merge(int arr[], int low, int high, int mid) {
     int n1 = mid - low + 1;
     int n2 = high - mid;
 
-    int left[n1+1];
-    int right[n2+1];
+    // Temporary arrays for left and right subarrays
+    int left[n1], right[n2];
 
-    for(int i = 0;i<=n1;i++){
-
-            left[i] = arr[low+i];
-
-
+    // Copy data into temporary arrays
+    for (int i = 0; i < n1; i++) {
+        left[i] = arr[low + i];
+    }
+    for (int j = 0; j < n2; j++) {
+        right[j] = arr[mid + 1 + j];
     }
 
-    for(int j = 0;j<=n2;j++){
-
-            left[j] = arr[low+j];
-
-
-    }
-
-    left[n1+1] = 64546546;
-    right[n2+1] = 9879846;
-
-
-    //Merged Part
-
-    for(int k = low;k<=high;k++){
-
-        if(left[i]<=right[i]){
+    // Merge the two temporary arrays back into the original array
+    int i = 0, j = 0, k = low;
+    while (i < n1 && j < n2) {
+        if (left[i] <= right[j]) {
             arr[k] = left[i];
             i++;
-        }
-        else
+        } else {
             arr[k] = right[j];
             j++;
+        }
+        k++;
     }
 
-}
-void merge(arr,low,high){
-
-    if(low<high){
-
-        int mid = (low=high)/2;
-        divide_merge(arr,low,high);
-        divide_merge(arr,mid+1,high);
-        merge(arr,low,mid,high);
+    // Copy remaining elements of left array, if any
+    while (i < n1) {
+        arr[k] = left[i];
+        i++;
+        k++;
     }
 
-
-
+    // Copy remaining elements of right array, if any
+    while (j < n2) {
+        arr[k] = right[j];
+        j++;
+        k++;
+    }
 }
+
+// Recursive function to implement merge sort
+void merge(int arr[], int low, int high) {
+    if (low < high) {
+        int mid = (low + high) / 2;
+
+        // Sort the left and right halves
+        merge(arr, low, mid);
+        merge(arr, mid + 1, high);
+
+
