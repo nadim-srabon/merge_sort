@@ -72,4 +72,7 @@ void merge(int arr[], int low, int high) {
         merge(arr, low, mid);
         merge(arr, mid + 1, high);
 
-
+        // Merge the two halves
+        divide_merge(arr, low, high, mid);
+    }
+}
